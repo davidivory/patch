@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Header from "./components/Header";
+import Toaster from "./components/Toaster";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -29,6 +30,7 @@ function App() {
             </Routes>
           </main>
         </BrowserRouter>
+        <Toaster />
       </div>
     </ThemeProvider>
   );
