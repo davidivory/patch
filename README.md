@@ -20,8 +20,8 @@ PATCH is a modern, minimalist web application designed to help cybersecurity stu
 ##  Getting Started
 
 bash
-git clone https://github.com/yourusername/PATCH-lab.git
-cd PATCH-lab
+git clone https://github.com/davidivory/patch.git
+cd patch
 # Follow setup instructions in /frontend and /backend folders
 
 ## Vulnerabilities Covered (Phase 1)
