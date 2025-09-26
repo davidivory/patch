@@ -31,28 +31,40 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate vulnerable login check (educational)
-    setTimeout(() => {
-      if (formData.username && formData.password) {
-        // Simulate successful login with any credentials (for demo)
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+
+      if (data.session_id) {
+        localStorage.setItem("session_id", data.session_id);
+        localStorage.setItem("username", data.user.username);
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("username", formData.username);
-        
+
         toast({
           title: "Login Successful! ⚠️",
           description: "Welcome to the vulnerable system. This login has multiple security flaws for educational purposes.",
         });
-        
+
         navigate("/dashboard");
       } else {
         toast({
           title: "Login Failed",
-          description: "Please enter both username and password.",
+          description: data.error || "Invalid credentials",
           variant: "destructive",
         });
       }
-      setIsLoading(false);
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to connect to server",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {

@@ -22,7 +22,27 @@ PATCH is a modern, minimalist web application designed to help cybersecurity stu
 bash
 git clone https://github.com/davidivory/patch.git
 cd patch
-# Follow setup instructions in /frontend and /backend folders
+
+# Instructions to start Backend and Frontend
+### Backend
+cd backend
+pip install -r requirements.txt
+python -m uvicorn server:app --reload --host 0.0.0.0 --port 800 
+
+### Frontend
+The frontend dependencies aren't installed yet. Since there's a `yarn.lock` file, use Yarn:
+
+```javascript
+cd frontend
+yarn install
+yarn start
+```
+
+If you prefer npm:
+
+cd frontend
+npm install
+npm start
 
 ## Vulnerabilities Covered (Phase 1)
 SQL Injection

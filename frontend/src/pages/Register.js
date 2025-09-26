@@ -35,37 +35,50 @@ const Register = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (formData.username && formData.password && formData.email) {
-        if (formData.password !== formData.confirmPassword) {
-          toast({
-            title: "Registration Failed",
-            description: "Passwords do not match.",
-            variant: "destructive",
-          });
-          setIsLoading(false);
-          return;
-        }
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Registration Failed",
+        description: "Passwords do not match.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
 
-        // Simulate successful registration (vulnerable)
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("username", formData.username);
-        
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          email: formData.email,
+        }),
+      });
+      const data = await response.json();
+
+      if (data.id) {
         toast({
           title: "Registration Successful! ⚠️",
           description: "Account created with weak security measures for educational purposes.",
         });
-        
-        navigate("/dashboard");
+
+        navigate("/login");
       } else {
         toast({
           title: "Registration Failed",
-          description: "Please fill in all required fields.",
+          description: "Error creating account.",
           variant: "destructive",
         });
       }
-      setIsLoading(false);
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to connect to server",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {
