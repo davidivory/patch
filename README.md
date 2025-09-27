@@ -17,32 +17,78 @@ PATCH is a modern, minimalist web application designed to help cybersecurity stu
 - Educators building hands-on curriculum
 - Anyone preparing for SOC, GRC, or AppSec roles
 
-##  Getting Started
+## Prerequisites
 
-bash
+- Python 3.8+
+- Node.js 16+
+- MongoDB Community Server
+- Yarn or npm
+
+## Getting Started
+
+### 1. Clone the Repository
+```bash
 git clone https://github.com/davidivory/patch.git
 cd patch
-
-# Instructions to start Backend and Frontend
-### Backend
-cd backend
-pip install -r requirements.txt
-python -m uvicorn server:app --reload --host 0.0.0.0 --port 800 
-
-### Frontend
-The frontend dependencies aren't installed yet. Since there's a `yarn.lock` file, use Yarn:
-
-```javascript
-cd frontend
-yarn install
-yarn start
 ```
 
-If you prefer npm:
+### 2. Set up MongoDB
 
-cd frontend
-npm install
-npm start
+1. Download MongoDB Community Server from [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
+2. Install and start MongoDB (it runs on port 27017 by default)
+3. The application will create databases automatically when you run it
+
+### 3. Backend Setup (FastAPI)
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Start the FastAPI server:
+   ```bash
+   uvicorn server:app --host 0.0.0.0 --port 8000 --reload
+   ```
+
+The backend will be available at `http://localhost:8000`
+
+### 4. Frontend Setup (React)
+
+1. In a separate terminal, navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install Node.js dependencies:
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   yarn start
+   # or
+   npm start
+   ```
+
+The frontend will be available at `http://localhost:3000`
+
+### Environment Variables
+
+The backend uses environment variables defined in `backend/.env`:
+- `MONGO_URL`: MongoDB connection string (default: `mongodb://localhost:27017`)
+- `DB_NAME`: Database name (default: `patch_db`)
+
+The frontend uses `frontend/.env`:
+- `REACT_APP_BACKEND_URL`: Backend API URL (default: `http://localhost:8000`)
+
 
 ## Vulnerabilities Covered (Phase 1)
 SQL Injection

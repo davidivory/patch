@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -83,7 +83,10 @@ async def get_status_checks():
 
 # Authentication & Session Vulnerabilities
 @api_router.post("/login")
-async def login(username: str, password: str):
+async def login(request: Request):
+    data = await request.json()
+    username = data.get("username")
+    password = data.get("password")
     # Vulnerable to NoSQL Injection via eval
     query_str = f"{{'username': '{username}', 'password': '{password}'}}"
     query = eval(query_str)
