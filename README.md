@@ -21,7 +21,7 @@ PATCH is a modern, minimalist web application designed to help cybersecurity stu
 
 - Python 3.8+
 - Node.js 16+
-- MongoDB Community Server
+- Docker Desktop
 - Yarn or npm
 
 ## Getting Started
@@ -32,10 +32,13 @@ git clone https://github.com/davidivory/patch.git
 cd patch
 ```
 
-### 2. Set up MongoDB
+### 2. Set up MongoDB with Docker
 
-1. Download MongoDB Community Server from [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
-2. Install and start MongoDB (it runs on port 27017 by default)
+1. Ensure Docker Desktop is installed and running.
+2. Run MongoDB in a Docker container:
+   ```bash
+   docker run -d -p 27017:27017 --name mongodb mongo:latest
+   ```
 3. The application will create databases automatically when you run it
 
 ### 3. Backend Setup (FastAPI)
