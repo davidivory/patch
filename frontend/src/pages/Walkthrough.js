@@ -112,6 +112,82 @@ const Walkthrough = () => {
           type: "practical",
           content: "Implement CSP headers to mitigate XSS risks.",
           example: "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'"
+        },
+        {
+          title: "Input Validation and Sanitization",
+          type: "theory",
+          content: "Proper input validation is crucial for preventing injection attacks and ensuring data integrity.",
+          bestPractices: ["Validate on server-side", "Use allowlists over blocklists", "Sanitize output", "Implement rate limiting"]
+        },
+        {
+          title: "Content Security Policy Implementation",
+          type: "practical",
+          content: "Configure CSP headers to prevent XSS attacks.",
+          exercise: "Configure CSP for the vulnerable application to prevent XSS.",
+          code: "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'"
+        }
+      ],
+      wt_006: [
+        {
+          title: "Introduction to Registration Vulnerabilities",
+          type: "theory",
+          content: "User registration forms are a common attack vector for cybercriminals. Understanding these vulnerabilities is crucial for building secure authentication systems. We'll examine five common weak authentication flaws in registration processes.",
+          overview: "This walkthrough covers the most common registration security flaws: weak password policies, lack of email verification, insecure password storage, missing input validation, and user enumeration risks.",
+        },
+        {
+          title: "Weak Password Policy",
+          type: "theory",
+          content: "Weak password policies make it easy for attackers to guess or brute-force user credentials. Password strength requirements should enforce minimum complexity, length, and diversity.",
+          vulnerability: "Accepting any password combination, no minimum requirements for length or character types.",
+          example: "Password: 'password' - easily crackable",
+          prevention: ["Enforce minimum length (12+ characters)", "Require uppercase/lowercase/numbers/symbols", "Use password strength meters", "Implement breach checking"],
+        },
+        {
+          title: "No Email Verification",
+          type: "theory",
+          content: "Email verification ensures the email address provided belongs to the user. Without it, attackers can create unlimited accounts and conduct phishing or spam campaigns.",
+          vulnerability: "Accounts created without verifying email ownership, no link sent to confirm.",
+          risks: ["Unlimited account creation", "Phishing campaigns", "Spam distribution", "Credential stuffing"],
+          prevention: ["Send verification emails", "Require email confirmation", "Use temporary accounts for unverified users", "Implement rate limiting"],
+        },
+        {
+          title: "Passwords Stored in Plaintext",
+          type: "theory",
+          content: "Storing passwords in plaintext means they're readable by anyone with database access. This is catastrophic if the database is breached. Passwords must be hashed using secure algorithms.",
+          vulnerability: "password = request.password  # Stored as plain text in database",
+          badExample: "user.password = \"$2b$12$plaintextpassword\"",
+          goodExample: "user.password = bcrypt.hash(request.password, 12)",
+          prevention: ["Use bcrypt, Argon2id, or PBKDF2", "Apply salt + pepper", "Never store passwords reversibly", "Use slow hashing algorithms"],
+        },
+        {
+          title: "No Input Validation",
+          type: "practical",
+          content: "Input validation ensures user data meets expected formats and doesn't contain malicious content. Without proper validation, attackers can inject harmful data or bypass business logic.",
+          vulnerability: "No checks on username, email, or password formats.",
+          attacks: ["SQL injection in username fields", "XSS via username", "Invalid email formats", "Long input DoS"],
+          prevention: ["Validate on server-side (client-side is insufficient)", "Use appropriate data types", "Sanitize inputs", "Enforce maximum lengths"],
+        },
+        {
+          title: "Susceptible to User Enumeration",
+          type: "practical",
+          content: "User enumeration occurs when the application reveals whether a username or email exists. This helps attackers target valid accounts and refine social engineering attacks.",
+          vulnerability: "Different responses for existing vs non-existing users expose account information.",
+          example: "Existing user: 'Account created successfully'\nNon-existing: 'Invalid email format' - subtle leak",
+          prevention: ["Use consistent error messages", "Rate limit registration attempts", "Don't reveal account existence", "Use time-delayed responses"],
+          task: "Test the registration form with both existing and non-existing usernames to identify enumeration leaks."
+        },
+        {
+          title: "Secure Registration Implementation",
+          type: "exercise",
+          content: "Now that you've learned about registration vulnerabilities, implement a secure registration process.",
+          checklist: [
+            "Enforce strong password requirements",
+            "Implement email verification", 
+            "Hash passwords with bcrypt",
+            "Validate all inputs on server-side",
+            "Prevent user enumeration attacks",
+            "Add rate limiting and CAPTCHA if needed"
+          ]
         }
       ]
     };

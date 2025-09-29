@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, Request
+from fastapi import FastAPI, APIRouter, Request, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -100,6 +100,10 @@ async def login(request: Request):
 @api_router.post("/register", response_model=User)
 async def register(user: UserCreate):
     # Weak password policy: no enforcement
+    # No uniqueness check: allows duplicate usernames (vulnerability)
+    # If we check, and return same error regardless, would prevent enumeration
+    if await db.users.find_one({"username": user.username}):
+        raise HTTPException(status_code=409, detail="Registration failed.")
     user_obj = User(**user.dict())
     await db.users.insert_one(user_obj.dict())
     return user_obj

@@ -74,6 +74,18 @@ export const mockWalkthroughs = [
     vulnerabilities: ["Broken Object Level Authorization", "API Rate Limiting"],
     exercises: 10,
   },
+  {
+    id: "wt_006",
+    title: "Insecure User Registration",
+    description: "Examine common registration vulnerabilities and learn secure implementation practices.",
+    difficulty: "Beginner",
+    duration: "50 minutes",
+    completed: false,
+    progress: 0,
+    topics: ["Authentication", "Password Security", "Input Validation"],
+    vulnerabilities: ["Weak password policy", "No email verification", "Passwords stored in plaintext", "No input validation", "Susceptible to user enumeration"],
+    exercises: 6,
+  },
 ];
 
 export const mockJournalEntries = [
