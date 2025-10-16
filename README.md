@@ -57,45 +57,53 @@ cd patch
 
 ### 3. Backend Setup (FastAPI)
 
-1. Navigate to the backend directory:
+1. Install Python dependencies:
    ```bash
-   cd backend
+   pip install -r backend/requirements.txt
    ```
 
-2. Install Python dependencies:
+2. Start the FastAPI server from the project root:
    ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Start the FastAPI server:
-   ```bash
-   uvicorn server:app --host 0.0.0.0 --port 8000 --reload
+   python -m uvicorn backend.server:app --reload
    ```
 
 The backend will be available at `http://localhost:8000`
 
-### 4. Frontend Setup (React)
+### 4. Frontend Setup (React) [Optional - Currently has dependency conflicts]
 
-1. In a separate terminal, navigate to the frontend directory:
+⚠️ **Note**: The frontend currently has dependency compatibility issues (ajv/ajv-keywords) that prevent it from starting. The backend works fine for API testing, but the frontend UI won't start until compatibility is resolved.
+
+**Recommended Solutions:**
+```bash
+# Option 1: Install compatible ajv versions
+cd frontend
+npm install ajv@8.6.3 ajv-keywords@5.1.0 --legacy-peer-deps
+
+# Option 2: Clean reinstall
+cd frontend
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+
+# Option 3: Use yarn (may have better dependency resolution)
+cd frontend
+yarn install --ignore-engines
+```
+
+**Installation Instructions:**
+1. Install Node.js dependencies:
    ```bash
    cd frontend
+   npm install --legacy-peer-deps
    ```
 
-2. Install Node.js dependencies:
+2. If successful, start the development server:
    ```bash
-   yarn install
-   # or
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   yarn start
-   # or
    npm start
    ```
 
-The frontend will be available at `http://localhost:3000`
+The frontend will be available at `http://localhost:3000` (when working)
+
+**Alternative**: Use the backend API directly via http://localhost:8000/docs (Swagger UI) for now
 
 ### 5. Scan the Application (Vulnerability Assessment)
 
@@ -129,12 +137,17 @@ Once the application is running, perform initial vulnerability assessment:
 
 **Recommended Initial Scan Commands:**
 ```bash
-# Quick web server scan
+# Quick web server scan (when frontend is working)
 nikto -h http://localhost:3000
 
-# Scan for common vulnerabilities
-curl -s http://localhost:3000/api/debug  # Check for exposed debug info
-curl -s http://localhost:3000/api/admin/config  # Check for exposed config
+# Scan for common API vulnerabilities (always available)
+curl -s http://localhost:8000/api/debug  # Check for exposed debug info
+curl -s http://localhost:8000/api/admin/config  # Check for exposed config
+curl -s http://localhost:8000/api/admin/logs  # Check for log exposure
+curl -s http://localhost:8000/api/admin/users  # Check for user enumeration
+
+# Test SQL injection vulnerability in login
+curl -X POST http://localhost:8000/api/login -H "Content-Type: application/json" -d '{"username": "admin", "password": "password"}' || true'
 ```
 
 ### 6. Learn Through Interactive Walkthroughs
